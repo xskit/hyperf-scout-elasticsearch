@@ -2,6 +2,7 @@
   "name": "xskit/hyperf-scout-elasticsearch",
   "description": "hyperf scout elasticsearch component",
   "version": "1.0.1",
+  "license": "Apache-2.0",
   "require": {
     "php": ">=7.2",
     "hyperf/elasticsearch": "~2.0.0"
