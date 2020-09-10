@@ -3,7 +3,6 @@
 
 namespace XsKit\ScoutElasticSearch\Traits;
 
-use App\Helper\DebugLog;
 use XsKit\ScoutElasticSearch\Config;
 use XsKit\ScoutElasticSearch\SearchableScope;
 use Exception;
