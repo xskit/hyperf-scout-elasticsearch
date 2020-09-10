@@ -1,0 +1,25 @@
+{
+  "name": "xskit/hyperf-scout-elasticsearch",
+  "description": "hyperf scout elasticsearch component",
+  "version": "1.0.1",
+  "require": {
+    "php": ">=7.2",
+    "hyperf/elasticsearch": "~2.0.0"
+  },
+  "authors": [
+    {
+      "name": "north wind",
+      "email": "250915790@qq.com"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "XsKit\\ScoutElasticSearch\\": "src/"
+    }
+  },
+  "extra": {
+    "hyperf": {
+      "config": "XsKit\\ScoutElasticSearch\\ConfigProvider"
+    }
+  }
+}
