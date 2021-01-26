@@ -3,6 +3,7 @@
 
 namespace XsKit\ScoutElasticSearch;
 
+use Elasticsearch\Client;
 use XsKit\ScoutElasticSearch\Indexers\IndexerInterface;
 use XsKit\Traits\ElasticSearch\Migratable;
 use Hyperf\Database\Model\Model;
@@ -133,10 +134,15 @@ class ElasticEngine extends Engine
      */
     protected function performSearch(Builder $builder, array $options = [])
     {
+
+        $clientFactory = new ClientBuilderFactory();
+        /** @var Client $client */
+        $client = $clientFactory->create()->build();
+
         if ($builder->callback) {
             return call_user_func(
                 $builder->callback,
-                ElasticClient::getClient(),
+                $client,
                 $builder->query,
                 $options
             );
@@ -146,9 +152,9 @@ class ElasticEngine extends Engine
 
         $this
             ->buildSearchQueryPayloadCollection($builder, $options)
-            ->each(function ($payload) use (&$results) {
+            ->each(function ($payload) use (&$results, $client) {
 
-                $results = ElasticClient::search($payload);
+                $results = $client->search($payload);
 
                 $results['_payload'] = $payload;
 
