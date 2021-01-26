@@ -1,4 +1,8 @@
 ## Hyperf 架构 Elasticsearch 组件
+
+Elasticsearch version >= 6 < 7
+
+
 ### 功能
 
 ## 配置

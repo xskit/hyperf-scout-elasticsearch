@@ -322,7 +322,7 @@ class ElasticEngine extends Engine
      */
     public function getTotalCount($results)
     {
-        return $results['hits']['total']['value'] ?? 0;
+        return $results['hits']['total'] ?? 0;
     }
 
     /**
