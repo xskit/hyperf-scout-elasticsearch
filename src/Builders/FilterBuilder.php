@@ -413,9 +413,35 @@ class FilterBuilder extends Builder
     }
 
     /**
+     * Add a custom orderBy clause.
+     * @param $key
+     * @param $value
+     * @return $this
+     */
+    public function orderByRaw($key, $value)
+    {
+        $this->orders[] = [
+            $key => $value
+        ];
+        return $this;
+    }
+
+    public function inRandomOrder()
+    {
+        $this->orderByRaw('_script',
+            [
+                'script' => 'Math.random()',
+                'type' => 'number',
+                'order' => 'asc',
+            ]);
+        return $this;
+    }
+
+    /**
      * Explain the request.
      *
      * @return array
+     * @throws \Exception
      */
     public function explain()
     {
@@ -428,6 +454,7 @@ class FilterBuilder extends Builder
      * Profile the request.
      *
      * @return array
+     * @throws \Exception
      */
     public function profile()
     {
@@ -439,7 +466,8 @@ class FilterBuilder extends Builder
     /**
      * Build the payload.
      *
-     * @return array
+     * @return \Hyperf\Utils\Collection|\Illuminate\Support\Collection
+     * @throws \Exception
      */
     public function buildPayload()
     {
@@ -551,6 +579,7 @@ class FilterBuilder extends Builder
      * Get the count.
      *
      * @return int
+     * @throws \Exception
      */
     public function count()
     {
