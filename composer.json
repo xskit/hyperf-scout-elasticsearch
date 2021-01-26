@@ -29,6 +29,9 @@
     "guzzlehttp/ringphp": "~1.0"
   },
   "extra": {
+    "branch-alias": {
+      "dev-master": "2.1-dev"
+    },
     "hyperf": {
       "config": "XsKit\\ScoutElasticSearch\\ConfigProvider"
     }
