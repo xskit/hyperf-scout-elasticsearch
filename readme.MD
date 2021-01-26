@@ -1,7 +1,6 @@
 ## Hyperf 架构 Elasticsearch 组件
 ### 功能
 
-
 ## 配置
 > 发布配置文件
 ```shell

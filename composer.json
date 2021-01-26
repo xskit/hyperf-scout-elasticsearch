@@ -1,26 +1,40 @@
 {
   "name": "xskit/hyperf-scout-elasticsearch",
-  "description": "hyperf scout elasticsearch component",
-  "version": "1.0.1",
-  "license": "Apache-2.0",
-  "require": {
-    "php": ">=7.2",
-    "hyperf/elasticsearch": "~2.0.0"
-  },
-  "authors": [
-    {
-      "name": "north wind",
-      "email": "250915790@qq.com"
-    }
+  "type": "library",
+  "license": "MIT",
+  "keywords": [
+    "php",
+    "swoole",
+    "elasticsearch"
   ],
+  "description": "Elasticsearch client for hyperf",
   "autoload": {
     "psr-4": {
       "XsKit\\ScoutElasticSearch\\": "src/"
     }
   },
+  "autoload-dev": {
+    "psr-4": {
+      "Test\\Elasticsearch\\": "tests/"
+    }
+  },
+  "require": {
+    "php": ">=7.2",
+    "hyperf/guzzle": "2.1.*",
+    "elasticsearch/elasticsearch": "6.*"
+  },
+  "require-dev": {
+    "swoole/ide-helper": "dev-master",
+    "phpunit/phpunit": "^9.4",
+    "guzzlehttp/ringphp": "~1.0"
+  },
   "extra": {
     "hyperf": {
       "config": "XsKit\\ScoutElasticSearch\\ConfigProvider"
     }
+  },
+  "scripts": {
+    "test": "./vendor/bin/phpunit -c phpunit.xml --colors=always",
+    "co_test": "php tests/co_phpunit.php -c phpunit.xml"
   }
 }
