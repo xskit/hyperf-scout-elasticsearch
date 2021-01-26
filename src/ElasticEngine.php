@@ -4,6 +4,7 @@
 namespace XsKit\ScoutElasticSearch;
 
 use Elasticsearch\Client;
+use Hyperf\Utils\ApplicationContext;
 use XsKit\ScoutElasticSearch\Indexers\IndexerInterface;
 use XsKit\Traits\ElasticSearch\Migratable;
 use Hyperf\Database\Model\Model;
@@ -53,6 +54,13 @@ class ElasticEngine extends Engine
 
 
         $this->updateMapping = $updateMapping;
+    }
+
+    public static function getElasticClient(): Client
+    {
+        /** @var ClientBuilderFactory $clientFactory */
+        $clientFactory = make(ClientBuilderFactory::class);
+        return $clientFactory->create()->setHosts(ApplicationContext::getContainer()->get(Config::class)->host())->build();
     }
 
     /**
@@ -135,14 +143,10 @@ class ElasticEngine extends Engine
     protected function performSearch(Builder $builder, array $options = [])
     {
 
-        $clientFactory = new ClientBuilderFactory();
-        /** @var Client $client */
-        $client = $clientFactory->create()->build();
-
         if ($builder->callback) {
             return call_user_func(
                 $builder->callback,
-                $client,
+                static::getElasticClient(),
                 $builder->query,
                 $options
             );
@@ -152,9 +156,9 @@ class ElasticEngine extends Engine
 
         $this
             ->buildSearchQueryPayloadCollection($builder, $options)
-            ->each(function ($payload) use (&$results, $client) {
+            ->each(function ($payload) use (&$results) {
 
-                $results = $client->search($payload);
+                $results = static::getElasticClient()->search($payload);
 
                 $results['_payload'] = $payload;
 
@@ -226,7 +230,7 @@ class ElasticEngine extends Engine
         $this
             ->buildSearchQueryPayloadCollection($builder, ['highlight' => false])
             ->each(function ($payload) use (&$count) {
-                $result = ElasticClient::count($payload);
+                $result = static::getElasticClient()->count($payload);
 
                 $count = $result['count'];
 
@@ -252,7 +256,7 @@ class ElasticEngine extends Engine
             ->setIfNotEmpty('body', $query)
             ->get();
 
-        return ElasticClient::search($payload);
+        return static::getElasticClient()->search($payload);
     }
 
     /**
@@ -347,6 +351,7 @@ class ElasticEngine extends Engine
             ->update($models);
     }
 
+
     /**
      * 更新索引映射
      * @param $model
@@ -373,7 +378,7 @@ class ElasticEngine extends Engine
             $payload->useAlias('write');
         }
 
-        ElasticClient::indices()->putMapping($payload->get());
+        static::getElasticClient()->indices()->putMapping($payload->get());
     }
 
     /**
